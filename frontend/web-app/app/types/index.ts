@@ -4,7 +4,7 @@ export type PagedResult<T> = {
 	totalCount: number;
 };
 export type Auction = {
-    id: string;
+	id: string;
 	reservePrice: number;
 	seller: string;
 	winner?: string;
@@ -20,4 +20,10 @@ export type Auction = {
 	color: string;
 	mileage: number;
 	imageUrl: string;
+};
+
+export type User = {
+	name: string | undefined;
+	username?: string;
+	expires?: string;
 };

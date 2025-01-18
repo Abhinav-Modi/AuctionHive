@@ -1,21 +1,41 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { User } from "../types"; // Adjust the import path as necessary
 import { AiOutlineCar } from "react-icons/ai";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Search from "./Search";
 import { useParamsStore } from "../hooks/useParamsStore";
+import LoginButton from "./LoginButton";
+import { getCurrentUser } from "../actions/authActions";
+import UserAction from "./UserAction";
+import { usePathname, useRouter } from "next/navigation";
 
 const Navbar = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
-	const resetPage = useParamsStore((state) => state.reset);
-
+	const [user, setUser] = useState<User | null>(null);
+	const router = useRouter();
+	const pathname = usePathname();
+	
+	function doReset() {
+		if(pathname!=='/')  router.push('/');
+		reset();
+	}
+	const reset = useParamsStore((state) => state.reset);
+	useEffect(() => {
+		const fetchUser = async () => {
+			const currentUser = await getCurrentUser();
+			console.log("Current user:", currentUser);
+			setUser(currentUser);
+		};
+		fetchUser();
+	}, []);
 	return (
 		<header className="sticky top-0 z-50 bg-white/95 backdrop-blur-sm shadow-sm">
 			<div className="container mx-auto">
 				<div className="flex justify-between items-center px-4 py-3">
 					{/* Logo */}
 					<div
-						onClick={resetPage}
+						onClick={doReset}
 						className="flex items-center space-x-2 group cursor-pointer"
 					>
 						<AiOutlineCar
@@ -42,12 +62,7 @@ const Navbar = () => {
 
 					{/* Desktop Buttons */}
 					<div className="hidden md:flex items-center space-x-4">
-						<button className="relative px-4 py-2 text-sm font-medium text-gray-700 transition-all duration-300 hover:text-red-500 after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-red-500 after:left-0 after:right-0 after:bottom-0 after:opacity-0 after:transition-all after:duration-300 hover:after:w-full hover:after:opacity-100">
-							Sign In
-						</button>
-						<button className="px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 hover:shadow-lg hover:scale-105 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition-all duration-300">
-							Start Bidding
-						</button>
+						{user ? <UserAction user={user} /> : <LoginButton />}
 					</div>
 
 					{/* Mobile Menu Button */}
@@ -81,12 +96,7 @@ const Navbar = () => {
 						About
 					</a>
 					<div className="pt-4 space-y-2">
-						<button className="w-full px-4 py-2 text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all duration-300">
-							Sign In
-						</button>
-						<button className="w-full px-4 py-2 text-sm font-medium text-white bg-red-500 rounded-lg hover:bg-red-600 hover:shadow-lg transform hover:scale-[1.02] transition-all duration-300">
-							Start Bidding
-						</button>
+						{user ? <UserAction user={user} /> : <LoginButton />}
 					</div>
 				</div>
 			</div>
