@@ -1,7 +1,7 @@
 "use server";
 
 import { auth } from "@/auth";
-import { User } from "../types";
+import { User } from "next-auth";
 export async function getCurrentUser(): Promise<User | null> {
 	try {
 		const session = await auth();
@@ -10,7 +10,7 @@ export async function getCurrentUser(): Promise<User | null> {
 		}
 		return {
 			name: session.user.name || "",
-			expires: session.expires || "",
+			username: session.user.username,
 		};
 	} catch (error) {
 		throw new Error("Error fetching user data", { cause: error });

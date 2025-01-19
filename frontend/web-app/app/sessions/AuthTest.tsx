@@ -1,19 +1,17 @@
 "use client";
-
 import React from "react";
 import { updateAuctionTest } from "../actions/auctionActions";
 import { Button } from "flowbite-react";
+
 interface AuctionResult {
-	// Define the structure of your auction result here
-	// For example:
-	id: number;
+	id: string;
 	mileage: number;
-	// Add other properties as needed
 }
+
 const AuthTest = () => {
 	const [loading, setLoading] = React.useState(false);
 	const [result, setResult] = React.useState<AuctionResult | null>(null);
-	const [error, setError] = React.useState<string>();
+	const [error, setError] = React.useState<string | undefined>();
 
 	async function doUpdate() {
 		setResult(null);
@@ -22,7 +20,8 @@ const AuthTest = () => {
 
 		try {
 			const res = await updateAuctionTest();
-			setResult(res);
+			
+			setResult(res as unknown as AuctionResult);
 		} catch (err) {
 			setError(err instanceof Error ? err.message : "An error occurred");
 			console.error(err);

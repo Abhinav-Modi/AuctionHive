@@ -2,6 +2,7 @@ import React from "react";
 import CarImage from "./CarImage";
 import CountdownTimer from "./CountdownTimer";
 import { Auction } from "../types";
+import Link from "next/link";
 
 type Props = {
 	auction: Auction;
@@ -9,7 +10,7 @@ type Props = {
 
 const AuctionCard = ({ auction }: Props) => {
 	return (
-		<a href="#" className="group block">
+		<Link href={`auctions/details/${auction.id}`} className="group block">
 			<div className="relative bg-gray-200 rounded-lg overflow-hidden shadow-md transition-shadow duration-300 group-hover:shadow-xl">
 				<div className="aspect-[16/9] relative">
 					<CarImage auction={auction} />
@@ -31,7 +32,7 @@ const AuctionCard = ({ auction }: Props) => {
 					</div>
 				</div>
 			</div>
-		</a>
+		</Link>
 	);
 };
 

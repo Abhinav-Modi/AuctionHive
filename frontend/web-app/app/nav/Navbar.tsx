@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { User } from "../types"; // Adjust the import path as necessary
+import { User } from "next-auth"; 
 import { AiOutlineCar } from "react-icons/ai";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Search from "./Search";

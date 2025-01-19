@@ -22,8 +22,3 @@ export type Auction = {
 	imageUrl: string;
 };
 
-export type User = {
-	name: string | undefined;
-	username?: string;
-	expires?: string;
-};
