@@ -1,4 +1,5 @@
 "use server";
+import { revalidatePath } from "next/cache";
 import { Auction, PagedResult } from "../types";
 import { fetchWrapper } from "@/lib/fetchWrapper";
 
@@ -17,4 +18,17 @@ export async function updateAuctionTest() {
 
 export async function createAuction(data: any) {
 	return await fetchWrapper.post(`/auctions`, data);
+}
+
+export async function updateAuction(data: FieldValues, id: string) {
+	const res = await fetchWrapper.put(`/auctions/${id}`, data);
+	revalidatePath(`/auctions/${id}`);
+	return res;
+}
+export async function deleteAuction(id: string) {
+	return await fetchWrapper.del(`/auctions/${id}`);
+}
+
+export async function getDetailViewData(id: string) : Promise<Auction> {
+	return await fetchWrapper.get(`/auctions/${id}`);
 }
